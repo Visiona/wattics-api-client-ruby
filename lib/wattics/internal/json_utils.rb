@@ -1,8 +1,3 @@
-# require 'json'
-# require 'date'
-#
-# # gem install gson
-#
 # class JsonUtils
 #
 #   # dateTime = DateTime.new(2001,2,3,4,5,6,Rational(0,24)).strftime("yyyy-MM-dd'T'HH:mm:ss.SSS'+00:00'")

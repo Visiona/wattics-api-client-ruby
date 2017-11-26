@@ -7,7 +7,10 @@ module ComWatticsInternal
       measurement = measurement.to_hash
       json = JSON.generate(measurement)
 
-      response = http_connection.post '/readjson' do |req|
+      response = http_connection.post do |req|
+        puts "posting req"
+        puts json
+        puts req
         req.headers['Content-Type'] = 'application/json'
         # req.params = measurement
         req.body = json
@@ -25,11 +28,11 @@ module ComWatticsInternal
       password = config.get_password
 
       Faraday.new(:url => url) do |builder|
-        builder.request :retry
-        builder.request  :url_encoded
-        builder.response :logger
-        builder.request :basic_auth, username, password
-        builder.adapter  Faraday.default_adapter
+        builder.request   :retry
+        builder.request   :url_encoded
+        builder.response  :logger
+        builder.request   :basic_auth, username, password
+        builder.adapter   Faraday.default_adapter
       end
 
     end

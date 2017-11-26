@@ -1,7 +1,5 @@
 module Api
-  module Client
-    module Ruby
+  module Wattics
       VERSION = "0.1.0"
-    end
   end
 end

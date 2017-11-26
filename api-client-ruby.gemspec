@@ -1,16 +1,15 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'api/client/ruby/version'
+require 'wattics/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "api-client-ruby"
-  spec.version       = Api::Client::Ruby::VERSION
-  spec.authors       = ["Visiona"]
+  spec.version       = Api::Wattics::VERSION
+  spec.authors       = ["Darek Biskupski"]
   spec.email         = ["darbis@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = %q{ This is a draft of ported library https://github.com/Wattics/api-client-java created to Wattics}
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
 
@@ -32,4 +31,8 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.14"
   spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rspec"
+
+  spec.add_dependency 'faraday'
+  spec.add_dependency 'json'
 end

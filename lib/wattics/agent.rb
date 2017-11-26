@@ -1,7 +1,6 @@
 require 'faraday'
 require 'json'
-require 'json/minify'
-require_relative '../lib/wattics/internal/client.rb'
+require_relative './internal/client.rb'
 
 module ComWattics
   class Agent
@@ -13,27 +12,21 @@ module ComWattics
       # new MeasurementWithConfig(measurement, config);
       #  Here we have processors, collectors, parrallel stream
 
-      # simple_measurement_hash = convert_to_hash(simple_measurement)
-      # config_hash = convert_to_hash(config)
       ComWatticsInternal::Client.new.send_http_response(measurement, config).status
-
-      # con = Faraday.new :url => MYDEV
-      #
-      # user = config.username
-      # passwd = config.username.password
-      # con.basic_auth  user, passwd
-      #
-      # res = con.post do |req|
-      #     req.headers['Content-Type'] = 'application/json'
-      #     req.body = JSON.minify(simple_measurement.get_hash)
-      # end
-      #
-      # res = con.post do |req|
-      #     req.headers['Content-Type'] = 'application/json'
-      #     req.body = JSON.minify(simple_measurement_hash)
-      # end
-
     end
+
+    def send_collection(measurement_list, config)
+      measurement_groups = measurement_list.group_by{ |o| o.id }
+      # parallelStream
+
+      measurement_groups.each{ |m| send(m, config) }
+      # measurementGroups.forEach((channelId, measurementsForChannelId) -> {
+      #     List<MeasurementWithConfig> measurementsWithConfig = measurementsForChannelId
+      #             .stream()
+      #             .map(measurement -> new MeasurementWithConfig(measurement, config))
+      #             .collect(Collectors.toList());
+    end
+
 
     # def convert_to_hash(object)
     #   object.instance_variables.map do |var|
@@ -43,7 +36,7 @@ module ComWattics
 
 
     def get_instance(maximumParallelSenders)
-# Agent getInstance()
+        # Agent getInstance()
     end
 
     def dispose
