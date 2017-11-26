@@ -1,42 +1,70 @@
-# Api::Client::Ruby
+# wattics-api-client-java
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/api/client/ruby`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This project is created for Wattics Ltd. Here I ported [API Java Library](https://github.com/Wattics/api-client-java) into Ruby API Library. The Gem serves to send energy data into Wattics API platform.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Once you clone the library into your local drive you can run the following
 
-```ruby
-gem 'api-client-ruby'
+```sh
+$ cd wattics-api-client-ruby
+$ rake install api-client-ruby
 ```
 
-And then execute:
+You can use the example file from now on. If you decide to play with it locally, run your local server on `localhost:4567` and if you use Sinatra, set up the following code on your Sinatra server so it can accept data you send
 
-    $ bundle
+```ruby
+require 'sinatra'
+require 'json'
 
-Or install it yourself as:
+post '/readjson' do
+    data = JSON.parse request.body.read
+    puts data
+end
+```
 
-    $ gem install api-client-ruby
+OR, go to:  
 
-## Usage
+```sh
+$ cd lib/wattics
+```
 
-TODO: Write usage instructions here
+and comment line with mydev (which is local server), into line with `'development'` environment in `example.rb`. You can change the values in simple_mesurement object as necessary.
 
-## Development
+```ruby
+# config = Config.new('production', "username", "password")
+# config = Config.new('development', "username", "password")
+config = Config.new('mydev', "username", "password")
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+simple_measurement = SimpleMeasurement.new
+simple_measurement.set_id("meter-id-01")
+simple_measurement.set_timestamp
+simple_measurement.value = 12.5
+agent.send(simple_measurement, config)
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+Once it's done, send the data
+
+```sh
+$ cd lib/wattics
+$ ruby example.rb
+```
+
+
+## Running the tests (in production)
+
+Only the first test (out of 3) is ready for execution.
+
+```sh
+$ rspec
+```
+
+## Current issues
+* The library uses basic functionality of Faraday gem. The original [API Java Library](https://github.com/Wattics/api-client-java) is based on HTTP Client which is able to send requests in concurrent and multithreaded way. One of my suggestions would be to experiment with ruby-concurrency gem ie. (CountDownLatch class) or JRuby.
+* Due to the above fact, RSpec tests include only one test checking successful status of sent requests. Checking if processor is idle after sending requests or checking if measurements are sorted before sending is due to be finished.
+* The functionality of sorting measurements by date is not completed yet. (the method send_collection(measurement_list, config) in agent.rb is a starting point to this.)
+
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/api-client-ruby.
-
-
-## License
-
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
-# wattics-api-client-ruby
+The original library  [api-client-java](https://github.com/Wattics/api-client-java) belongs to Wattics Ltd and the following code is ported from that into Ruby by [Dariusz Biskupski](http://dariuszbiskupski.com).

@@ -4,7 +4,7 @@ module ComWattics
 
     PRODUCTION = "https://web-collector.wattics.com/measurements/v2/unifiedjson/"
     DEVELOPMENT = "https://dev-web-collector.wattics.com/measurements/v2/unifiedjson/"
-    MYDEV = 'http://localhost:4567'
+    MYDEV = 'http://localhost:4567/readjson'
 
     def initialize(env, username=ENV[:username], password=ENV[:password])
       @environment = env
